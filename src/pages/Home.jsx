@@ -7,18 +7,18 @@ import { Footer } from '../components/Footer.jsx'
 
 export default function Home(){
     return (
-        <body>
+        <div>
             <Header />
             <main className="main bg-dark">
                 <Banner />
-                <sections className="features">
+                <section className="features">
                     <h2 className="sr-only">Features</h2>
                     <FeatureChat />
                     <FeatureMoney />
                     <FeatureSecurity />
-                </sections>
+                </section>
             </main>
             <Footer />
-        </body>
+        </div>
     )
 }

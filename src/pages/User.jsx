@@ -4,7 +4,7 @@ import Transaction from "../components/Transaction"
 
 export default function User() {
     return (
-        <body>
+        <div>
             <Header />
             <main className="main bg-dark">
                 <div className="header">
@@ -15,6 +15,6 @@ export default function User() {
                 <Transaction/>
             </main>
             <Footer />
-        </body>
+        </div>
     )
 }
