@@ -9,7 +9,7 @@ export default function Home(){
     return (
         <div>
             <Header />
-            <main className="main bg-dark">
+            <main className="main">
                 <Banner />
                 <section className="features">
                     <h2 className="sr-only">Features</h2>

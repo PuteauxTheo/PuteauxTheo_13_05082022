@@ -6,7 +6,7 @@ export default function User() {
     return (
         <div>
             <Header />
-            <main className="main bg-dark">
+            <main className="main">
                 <div className="header">
                     <h1>Welcome back<br />Tony Jarvis!</h1>
                     <button className="edit-button">Edit Name</button>
