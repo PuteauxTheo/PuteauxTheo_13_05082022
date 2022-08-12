@@ -2,69 +2,139 @@ import { createSlice } from "@reduxjs/toolkit";
 import { selectUser } from "../utils/selector";
 
 const initialState = {
-    status: 'void',
+    statusData: 'void',
+    statusToken: 'void',
+    token: null,
     data: null,
     error: null,
 }
 
 //action 
-export async function fetchUserData() {
+export function fetchUserData(login) {
 
     return async (dispatch, getState) => {
-        const status = selectUser(getState()).status
-        if (status === 'pending' || status === 'updating') {
+        const statusData = selectUser(getState()).statusData
+        if (statusData === 'pending' || statusData === 'updating') {
             return;
         }
-        dispatch(action.fetching())
+        dispatch(actions.userDataFetching())
+        const options = {
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(login),
+        }
         try {
-            const response = await fetch('http://localhost:3001/api/v1/user/login')
+            const response = await fetch('http://localhost:3001/api/v1/user/login', options)
             const data = await response.json()
-            dispatch(action.resolved(data))
+            console.log(data)
+            console.log(data.body)
+            dispatch(actions.userDataResolved(data))
         } catch (error) {
-            dispatch(action.rejected(error))
+            dispatch(actions.userDataRejected(error))
         }
     }
+}
 
+export function fetchUserToken(login) {
 
+    return async (dispatch, getState) => {
+        const statusToken = selectUser(getState()).statusToken
+        if (statusToken === ' pending' || statusToken === 'updating') {
+            return;
+        }
+        dispatch(actions.userTokenFetching())
+        const options = {
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(login),
+        }
+        try {
+            const response = await fetch('http://localhost:3001/api/v1/user/login', options)
+            const data = await response.json()
+            dispatch(actions.userTokenResolved(data))
+        } catch (error) {
+            dispatch(actions.userTokenRejected(error))
+        }
+    }
 }
 
 // reducer 
-const { action, reducer } = createSlice({
+const { actions, reducer } = createSlice({
     name: 'login',
     initialState,
     reducers: {
-        fetching: (draft) => {
-            if (draft.status === undefined) {
+        userDataFetching: (draft) => {
+            if (draft.statusData === undefined) {
                 return initialState
             }
-            if (draft.status === 'void') {
-                draft.status = 'pending'
+            if (draft.statusData === 'void') {
+                draft.statusData = 'pending'
                 return
             }
-            if (draft.status === 'rejected') {
+            if (draft.statusData === 'rejected') {
                 draft.error = null
-                draft.status = 'pending'
+                draft.statusData = 'pending'
                 return
             }
-            if (draft.status === 'resolved') {
-                draft.status = 'resolved'
+            if (draft.statusData === 'resolved') {
+                draft.statusData = 'resolved'
                 return
             }
             return
         },
-        resolved: (draft, action) => {
-            if (draft.status === 'pending' || draft.status === 'updating') {
+        userDataResolved: (draft, action) => {
+            if (draft.statusData === 'pending' || draft.statusData === 'updating') {
                 draft.data = action.payload
-                draft.status = 'resolved'
+                draft.statusData = 'resolved'
                 return
             }
             return
         },
-        rejected: (draft, action) => {
-            if (draft.status === 'pending' || draft.status === 'updating') {
+        userDataRejected: (draft, action) => {
+            if (draft.statusData === 'pending' || draft.statusData === 'updating') {
                 draft.error = action.payload
                 draft.data = null
-                draft.status = 'rejected'
+                draft.statusData = 'rejected'
+                return
+            }
+            return
+        },
+        userTokenFetching: (draft) => {
+            if (draft.statusToken === undefined) {
+                return initialState
+            }
+            if (draft.statusToken === 'void') {
+                draft.statusToken = 'pending'
+                return
+            }
+            if (draft.statusToken === 'rejected') {
+                draft.error = null
+                draft.statusToken = 'pending'
+                return
+            }
+            if (draft.statusToken === 'resolved') {
+                draft.statusToken = 'resolved'
+                return
+            }
+            return
+        },
+        userTokenResolved: (draft, action) => {
+            if (draft.statusToken === 'pending' || draft.statusToken === 'updating') {
+                draft.token = action.payload
+                draft.statusToken = 'resolved'
+                return
+            }
+            return
+        },
+        userTokenRejected: (draft, action) => {
+            if (draft.statusToken === 'rejected') {
+                draft.error = action.payload
+                draft.token = null
+                draft.statusToken = 'rejected'
                 return
             }
             return
@@ -75,7 +145,7 @@ const { action, reducer } = createSlice({
 
 
 // on export chaque action individuellement 
-export { action }
+export { actions }
 
 // on export le reducer comme default export 
 export default reducer
