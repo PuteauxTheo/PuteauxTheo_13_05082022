@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux"
 import { useNavigate } from "react-router-dom"
 import { Footer } from "../components/Footer"
 import Header from "../components/Header"
-import { fetchUserData } from "../features/user"
+import { fetchUserData, fetchUserToken } from "../features/user"
 
 export default function SignIn() {
 
@@ -11,17 +11,34 @@ export default function SignIn() {
     const dispatch = useDispatch()
     const [email, setEmail] = useState()
     const [password, setPassword] = useState()
+    const [valideUser, setValideUser] = useState(true)
 
 
-    // const login = useSelector(selectUser);
-    // console.log(login)
+
+
 
     const handleSubmit = async e => {
         e.preventDefault();
 
+        const rememberme = document.getElementById("remember-me").checked
+        console.log(rememberme)
         const login = { email, password }
+        const token = await dispatch(fetchUserToken(login))
+         console.log(token)
+        if(!token){
+            setValideUser(false)
+            return
+        }
 
+        setValideUser(true)
         dispatch(fetchUserData(login))
+
+        if(rememberme){
+            localStorage.setItem('token', token)
+            localStorage.setItem('rememberme', rememberme)
+        }else{
+            sessionStorage.setItem('token', token)
+        }
 
         
         navigate('/profile')
@@ -51,6 +68,7 @@ export default function SignIn() {
 
                         <button type="submit" className="sign-in-button">Sign In</button>
                     </form>
+                    { !valideUser && <div className="invalid-credentials"> Invalid credentials </div> }
                 </section>
             </main>
             <Footer/>
