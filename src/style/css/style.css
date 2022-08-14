@@ -70,6 +70,12 @@ body {
   font-size: 1.2rem;
 }
 
+.invalid-credentials {
+  font-size: 18px;
+  color: red;
+  margin: 5px;
+}
+
 .edit-button {
   border-color: #00bc77;
   background-color: #00bc77;
