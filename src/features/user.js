@@ -10,6 +10,14 @@ const initialState = {
 }
 
 //action 
+
+export function signOut(){
+    return async (dispatch) => {
+        localStorage.clear()
+        sessionStorage.clear()
+        dispatch(actions.reset())
+    }
+}
 export function fetchUserData(login) {
 
     return async (dispatch, getState) => {
@@ -55,7 +63,12 @@ export function fetchUserToken(login) {
         try {
             const response = await fetch('http://localhost:3001/api/v1/user/login', options)
             const data = await response.json()
+
+            if(response.status === 400){ console.log('invalid fields ') }
             dispatch(actions.userTokenResolved(data))
+            console.log("test"+data.body.token)
+
+            return data.body.token
         } catch (error) {
             dispatch(actions.userTokenRejected(error))
         }
