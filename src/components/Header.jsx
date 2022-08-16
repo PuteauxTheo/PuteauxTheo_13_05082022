@@ -1,14 +1,17 @@
+import { useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
+import { actions } from '../features/user'
 import argentBank from './../assets/argentBankLogo.png'
 
 export default function Header() {
 
-    
+    const dispatch = useDispatch()
     const token = localStorage.getItem('token') || sessionStorage.getItem('token')
 
     function signOut(){
         localStorage.clear()
-        sessionStorage.clear()        
+        sessionStorage.clear()     
+        dispatch(actions.reset())   
     }
 
     return (
