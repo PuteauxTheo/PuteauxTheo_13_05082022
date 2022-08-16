@@ -89,6 +89,10 @@ body {
   margin-bottom: 2rem;
 }
 
+.username {
+  color: black;
+}
+
 .hero {
   background-image: url("/src/assets/bank-tree.jpeg");
   background-position: 0 -50px;
