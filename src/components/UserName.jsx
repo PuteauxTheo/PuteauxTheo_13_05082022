@@ -1,20 +1,34 @@
-//import { useDispatch } from "react-redux"
+import { useDispatch } from "react-redux"
 import { useState } from "react"
+import { updateUserData } from "../features/user"
 
 
 
 export default function UserName({ user }) {
 
-    //const dispatch = useDispatch()
+    const dispatch = useDispatch()
     const [editName, setEditName] = useState(false)
+    const [firstName, setFirstName] = useState()
+    const [lastName, setLastName] = useState()
+
 
     console.log(editName)
+    console.log("firstName " + firstName + "   lastName  " + lastName)
+    const token = localStorage.getItem('token') || sessionStorage.getItem('token')
+    //const userName = 
 
-    const userName = <span >{user.data.firstName} {user.data.lastName}</span>
-
+    const cancel = async e => {
+        e.preventDefault();
+        setEditName(false)
+    }
     const handleEditName = async e => {
         e.preventDefault();
+        const edit = dispatch(updateUserData(firstName, lastName, token))
 
+        if(!edit){
+            return
+        }
+        setEditName(false)
 
     }
     return (
@@ -24,19 +38,19 @@ export default function UserName({ user }) {
                 <h1 className="username">Welcome Back</h1>
                 <form className="form" onSubmit={handleEditName}>
                     <div className="form-input">
-                        <input className="form-input-name" type="text" placeholder={user.data.firstName} ></input>
-                        <input className="form-input-name" type="text" placeholder={user.data.lastName} ></input>
+                        <input className="form-input-name" type="text" placeholder={user.data.firstName} onChange={e => setFirstName(e.target.value)}></input>
+                        <input className="form-input-name" type="text" placeholder={user.data.lastName} onChange={e => setLastName(e.target.value)}></input>
                     </div>
                     <div className="form-button">
-                        <button className="button">Cancel</button>
-                        <button className="button">Save</button>
+                        <button className="button" onClick={cancel}>Cancel</button>
+                        <button className="button" type="submit">Save</button>
                     </div>
                 </form>
             </div>
             :
 
             <div className="header">
-                <h1 className="username">Welcome back<br />{userName}</h1>
+                <h1 className="username">Welcome Back<br /><span >{user.data.firstName} {user.data.lastName}</span></h1>
                 <button className="edit-button" onClick={() => setEditName(true)}>Edit name</button>
             </div>
     )
