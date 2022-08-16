@@ -31,7 +31,7 @@ export default function SignIn() {
         }
 
         setValideUser(true)
-        dispatch(fetchUserData(login))
+        dispatch(fetchUserData(token))
 
         if(rememberme){
             localStorage.setItem('token', token)
@@ -64,7 +64,6 @@ export default function SignIn() {
                             <input type="checkbox" id="remember-me" />
                             <label htmlFor="remember-me">Remember me</label>
                         </div>
-                        {/* <Link to="/profile" className="sign-in-button">Sign In</Link> */}
 
                         <button type="submit" className="sign-in-button">Sign In</button>
                     </form>
