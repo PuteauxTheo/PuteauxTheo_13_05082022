@@ -18,27 +18,32 @@ export function signOut(){
         dispatch(actions.reset())
     }
 }
-export function fetchUserData(login) {
+
+export function fetchUserData(token) {
 
     return async (dispatch, getState) => {
         const statusData = selectUser(getState()).statusData
         if (statusData === 'pending' || statusData === 'updating') {
             return;
         }
-        dispatch(actions.userDataFetching())
+        if(statusData === 'rejected'){
+            localStorage.clear()
+            sessionStorage.clear()            
+        }
+
+        dispatch(actions.userDataFetching(token))
+
         const options = {
             method: 'post',
             headers: {
-                'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`,
             },
-            body: JSON.stringify(login),
         }
         try {
-            const response = await fetch('http://localhost:3001/api/v1/user/login', options)
+            const response = await fetch('http://localhost:3001/api/v1/user/profile', options)
             const data = await response.json()
             console.log(data)
-            console.log(data.body)
-            dispatch(actions.userDataResolved(data))
+            dispatch(actions.userDataResolved(data.body))
         } catch (error) {
             dispatch(actions.userDataRejected(error))
         }
