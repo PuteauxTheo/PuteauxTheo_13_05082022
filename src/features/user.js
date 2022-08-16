@@ -34,7 +34,7 @@ export function fetchUserData(token) {
         dispatch(actions.userDataFetching(token))
 
         const options = {
-            method: 'post',
+            method: 'POST',
             headers: {
                 Authorization: `Bearer ${token}`,
             },
@@ -59,7 +59,7 @@ export function fetchUserToken(login) {
         }
         dispatch(actions.userTokenFetching())
         const options = {
-            method: 'post',
+            method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -76,6 +76,29 @@ export function fetchUserToken(login) {
             return data.body.token
         } catch (error) {
             dispatch(actions.userTokenRejected(error))
+        }
+    }
+}
+
+export function updateUserData(firstName, lastName, token) {
+    return async (dispatch) => {
+        const options = {
+            method: 'PUT',
+            headers:{
+                Authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            },
+            body:JSON.stringify({firstName , lastName}),
+        }
+        try{
+            const response = fetch("http://localhost:3001/api/v1/user/profile", options)
+
+            if(response.status === 400){ console.log('invalid fields ') }
+            dispatch(actions.updateUserData( firstName, lastName, token))
+
+
+        }catch (error){
+            dispatch(actions)
         }
     }
 }
@@ -155,6 +178,11 @@ const { actions, reducer } = createSlice({
                 draft.statusToken = 'rejected'
                 return
             }
+            return
+        },
+        updateUserData: (draft, action) => {
+            draft.data.firstName = action.payload.firstName;
+            draft.data.lastName = action.payload.lastName;
             return
         }
     }
