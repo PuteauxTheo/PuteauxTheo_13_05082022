@@ -184,6 +184,9 @@ const { actions, reducer } = createSlice({
             draft.data.firstName = action.payload.firstName;
             draft.data.lastName = action.payload.lastName;
             return
+        },
+        reset: () => {
+            return initialState;
         }
     }
 
