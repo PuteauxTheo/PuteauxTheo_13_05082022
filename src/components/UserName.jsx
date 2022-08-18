@@ -15,7 +15,6 @@ export default function UserName({ user }) {
     console.log(editName)
     console.log("firstName " + firstName + "   lastName  " + lastName)
     const token = localStorage.getItem('token') || sessionStorage.getItem('token')
-    //const userName = 
 
     const cancel = async e => {
         e.preventDefault();
@@ -23,11 +22,8 @@ export default function UserName({ user }) {
     }
     const handleEditName = async e => {
         e.preventDefault();
-        const edit = dispatch(updateUserData(firstName, lastName, token))
+        dispatch(updateUserData(firstName, lastName, token))
 
-        if(!edit){
-            return
-        }
         setEditName(false)
 
     }
