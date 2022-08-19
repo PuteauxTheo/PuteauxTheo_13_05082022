@@ -15,13 +15,6 @@ export default function SignIn() {
     const [valideUser, setValideUser] = useState(true)
 
 
-    
-    //document.getElementById('username').value = localStorage.getItem('email')
-
-    console.log(" test " + localStorage.getItem('email'))
-    
-
-
     const handleSubmit = async e => {
         e.preventDefault();
 
