@@ -80,7 +80,7 @@ export function fetchUserToken(login) {
     }
 }
 
-export function updateUserData(firstName, lastName, token) {
+export function updateUserData(name, token) {
     return async (dispatch) => {
         const options = {
             method: 'PUT',
@@ -88,14 +88,15 @@ export function updateUserData(firstName, lastName, token) {
                 Authorization: `Bearer ${token}`,
                 'Content-Type': 'application/json'
             },
-            body:JSON.stringify({firstName , lastName}),
+            body:JSON.stringify(name),
         }
         try{
             const response = fetch("http://localhost:3001/api/v1/user/profile", options)
 
             if(response.status === 400){ console.log('invalid fields ') }
-            dispatch(actions.updateUserData( firstName, lastName, token))
-
+            dispatch(actions.updateUserData( name, token))
+            
+            
 
         }catch (error){
             dispatch(actions)
