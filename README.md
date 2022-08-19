@@ -28,7 +28,7 @@ mongo --version
 1. Open a terminal window in the cloned project
 1. Run the following commands:
 
-`https://github.com/OpenClassrooms-Student-Center/Project-10-Bank-API.git`
+`https://github.com/PuteauxTheo/PuteauxTheo_13_API_05082022.git`
 
 ```bash
 # Install dependencies
