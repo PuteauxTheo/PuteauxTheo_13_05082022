@@ -1,3 +1,4 @@
+import { useEffect } from "react"
 import { useState } from "react"
 import { useDispatch } from "react-redux"
 import { useNavigate } from "react-router-dom"
@@ -14,7 +15,11 @@ export default function SignIn() {
     const [valideUser, setValideUser] = useState(true)
 
 
+    
+    //document.getElementById('username').value = localStorage.getItem('email')
 
+    console.log(" test " + localStorage.getItem('email'))
+    
 
 
     const handleSubmit = async e => {
@@ -36,6 +41,7 @@ export default function SignIn() {
         if(rememberme){
             localStorage.setItem('token', token)
             localStorage.setItem('rememberme', rememberme)
+            localStorage.setItem('email', email)
         }else{
             sessionStorage.setItem('token', token)
         }
@@ -43,6 +49,13 @@ export default function SignIn() {
         
         navigate('/profile')
     }
+
+    useEffect(() => {
+        if (localStorage.getItem('email') ) {
+            console.log(localStorage.getItem('email'))
+            document.getElementById('username').setAttribute('value', localStorage.getItem('email'))
+        }
+    })
 
     return (
         <div>
