@@ -18,7 +18,7 @@ export default function Header() {
 
     return (
 
-        token ?
+        token && user.data ?
 
             <nav className="main-nav">
                 <Link className="main-nav-logo" to="/">
