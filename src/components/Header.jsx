@@ -11,6 +11,8 @@ export default function Header() {
     const token = localStorage.getItem('token') || sessionStorage.getItem('token')
 
     function signOut() {
+        localStorage.removeItem('user')
+        localStorage.removeItem('token')
         sessionStorage.clear()
         dispatch(actions.reset())
     }
