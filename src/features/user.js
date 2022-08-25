@@ -4,8 +4,8 @@ import { selectUser } from "../utils/selector";
 const initialState = {
     statusData: 'void',
     statusToken: 'void',
-    token: null,
-    data: null,
+    token: localStorage.getItem('token') || sessionStorage.getItem('token'),
+    data: JSON.parse(localStorage.getItem('user')),
     error: null,
 }
 
@@ -43,6 +43,7 @@ export function fetchUserData(token) {
             const response = await fetch('http://localhost:3001/api/v1/user/profile', options)
             const data = await response.json()
             console.log(data)
+            localStorage.setItem('user', JSON.stringify(data.body))
             dispatch(actions.userDataResolved(data.body))
         } catch (error) {
             dispatch(actions.userDataRejected(error))
