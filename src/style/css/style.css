@@ -19,6 +19,7 @@ body {
 
 .bg-dark {
   background-color: #12002b;
+  padding: 25px;
 }
 
 .sign-in-button {
@@ -172,6 +173,7 @@ body {
 
 .username {
   color: white;
+  padding-top: 25px;
 }
 
 .form-input {
