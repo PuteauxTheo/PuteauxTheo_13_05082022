@@ -19,10 +19,10 @@ export default function SignIn() {
         e.preventDefault();
 
         const rememberme = document.getElementById("remember-me").checked
-        console.log(rememberme)
+        console.log("est il checke ? "+rememberme)
         const login = { email, password }
         const token = await dispatch(fetchUserToken(login))
-         console.log(token)
+
         if(!token){
             setValideUser(false)
             return
@@ -36,6 +36,8 @@ export default function SignIn() {
             localStorage.setItem('rememberme', rememberme)
             localStorage.setItem('email', email)
         }else{
+            console.log("value de rememberme "+rememberme)
+            localStorage.setItem('rememberme', rememberme)
             sessionStorage.setItem('token', token)
         }
 
@@ -44,27 +46,29 @@ export default function SignIn() {
     }
 
     useEffect(() => {
-        if (localStorage.getItem('email') ) {
-            console.log(localStorage.getItem('email'))
-            document.getElementById('username').setAttribute('value', localStorage.getItem('email'))
+    
+        if (localStorage.getItem('email') && (localStorage.getItem('rememberme') === "true" )) {
+            setEmail(localStorage.getItem('email'))
+        }else{
+            localStorage.removeItem('email')
         }
-    })
+    },[])
 
     return (
         <div>
             <Header />
-            <main className="main ">
+            <main className="main bg-dark">
                 <section className="sign-in-content">
                     <i className="fa fa-user-circle sign-in-icon"></i>
                     <h1>Sign In</h1>
                     <form onSubmit={handleSubmit}>
                         <div className="input-wrapper">
                             <label htmlFor="username">Username</label>
-                            <input type="text" onChange={e => setEmail(e.target.value)} id="username" />
+                            <input type="text" value={email} onChange={e => setEmail(e.target.value)} id="username" />
                         </div>
                         <div className="input-wrapper">
                             <label htmlFor="password">Password</label>
-                            <input type="password" onChange={e => setPassword (e.target.value)} id="password" />
+                            <input type="password" value={password} onChange={e => setPassword (e.target.value)} id="password" />
                         </div>
                         <div className="input-remember">
                             <input type="checkbox" id="remember-me" />
